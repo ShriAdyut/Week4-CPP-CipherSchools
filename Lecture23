@@ -1,0 +1,60 @@
+#include <iostream>
+#include <list>
+#include <queue>
+#include <vector>
+
+class Graph {
+private:
+    int numVertices;
+    std::vector<std::list<int>> adjacencyList;
+
+public:
+    Graph(int vertices) : numVertices(vertices), adjacencyList(vertices) {}
+
+    void addEdge(int src, int dest) {
+        adjacencyList[src].push_back(dest);
+        adjacencyList[dest].push_back(src);
+    }
+
+    void BFS(int startVertex) {
+        std::vector<bool> visited(numVertices, false);  // Track visited vertices
+        std::queue<int> queue;  // Queue for BFS traversal
+
+        visited[startVertex] = true;  // Mark the starting vertex as visited
+        queue.push(startVertex);  // Enqueue the starting vertex
+
+        while (!queue.empty()) {
+            int currentVertex = queue.front();
+            std::cout << currentVertex << " ";
+            queue.pop();
+
+            // Visit all adjacent vertices of the current vertex
+            for (int neighbor : adjacencyList[currentVertex]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.push(neighbor);
+                }
+            }
+        }
+    }
+};
+
+int main() {
+    Graph graph(6); // Create a graph with 6 vertices
+
+    // Add edges
+    graph.addEdge(0, 1);
+    graph.addEdge(0, 2);
+    graph.addEdge(1, 3);
+    graph.addEdge(2, 3);
+    graph.addEdge(2, 4);
+    graph.addEdge(3, 4);
+    graph.addEdge(3, 5);
+
+    int startVertex = 0;  // Starting vertex for BFS
+
+    std::cout << "BFS traversal starting from vertex " << startVertex << ": ";
+    graph.BFS(startVertex);
+
+    return 0;
+}
