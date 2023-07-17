@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <list>
+
+bool isCyclicUtil(int v, std::vector<bool>& visited, int parent, std::vector<std::list<int>>& adjacencyList) {
+    visited[v] = true;
+
+    for (int neighbor : adjacencyList[v]) {
+        if (!visited[neighbor]) {
+            if (isCyclicUtil(neighbor, visited, v, adjacencyList))
+                return true;
+        }
+        else if (neighbor != parent)
+            return true;
+    }
+
+    return false;
+}
+
+bool isCyclic(std::vector<std::list<int>>& adjacencyList) {
+    int numVertices = adjacencyList.size();
+    std::vector<bool> visited(numVertices, false);
+
+    for (int v = 0; v < numVertices; ++v) {
+        if (!visited[v]) {
+            if (isCyclicUtil(v, visited, -1, adjacencyList))
+                return true;
+        }
+    }
+
+    return false;
+}
+
+int main() {
+    int numVertices = 5;
+    std::vector<std::list<int>> adjacencyList(numVertices);
+
+    adjacencyList[0].push_back(1);
+    adjacencyList[0].push_back(2);
+    adjacencyList[1].push_back(2);
+    adjacencyList[2].push_back(3);
+    adjacencyList[3].push_back(4);
+
+    if (isCyclic(adjacencyList))
+        std::cout << "Cycle exists in the graph." << std::endl;
+    else
+        std::cout << "No cycle exists in the graph." << std::endl;
+
+    return 0;
+}
