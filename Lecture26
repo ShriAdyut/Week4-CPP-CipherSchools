@@ -1,0 +1,26 @@
+#include <iostream>
+
+int main() {
+    try {
+        // Code that might throw an exception
+        int numerator, denominator;
+        std::cout << "Enter numerator: ";
+        std::cin >> numerator;
+        std::cout << "Enter denominator: ";
+        std::cin >> denominator;
+
+        if (denominator == 0)
+            throw std::runtime_error("Divide by zero exception");
+
+        int result = numerator / denominator;
+        std::cout << "Result: " << result << std::endl;
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "Exception caught: " << ex.what() << std::endl;
+    }
+    catch (...) {
+        std::cerr << "Unknown exception caught." << std::endl;
+    }
+
+    return 0;
+}
