@@ -1,0 +1,98 @@
+#include <iostream>
+
+struct TreeNode {
+    int data;
+    TreeNode* left;
+    TreeNode* right;
+    
+    TreeNode(int value) : data(value), left(nullptr), right(nullptr) {}
+};
+
+class BinaryTree {
+private:
+    TreeNode* root;
+    
+public:
+    BinaryTree() : root(nullptr) {}
+    
+    void insert(int value) {
+        if (root == nullptr) {
+            root = new TreeNode(value);
+            return;
+        }
+        
+        TreeNode* currentNode = root;
+        while (true) {
+            if (value < currentNode->data) {
+                if (currentNode->left == nullptr) {
+                    currentNode->left = new TreeNode(value);
+                    break;
+                }
+                else {
+                    currentNode = currentNode->left;
+                }
+            }
+            else {
+                if (currentNode->right == nullptr) {
+                    currentNode->right = new TreeNode(value);
+                    break;
+                }
+                else {
+                    currentNode = currentNode->right;
+                }
+            }
+        }
+    }
+    
+    bool search(int value) {
+        TreeNode* currentNode = root;
+        while (currentNode != nullptr) {
+            if (value == currentNode->data) {
+                return true;
+            }
+            else if (value < currentNode->data) {
+                currentNode = currentNode->left;
+            }
+            else {
+                currentNode = currentNode->right;
+            }
+        }
+        return false;
+    }
+    
+    void inorderTraversal(TreeNode* node) {
+        if (node == nullptr) {
+            return;
+        }
+        
+        inorderTraversal(node->left);
+        std::cout << node->data << " ";
+        inorderTraversal(node->right);
+    }
+    
+    void printInorderTraversal() {
+        std::cout << "Inorder Traversal: ";
+        inorderTraversal(root);
+        std::cout << std::endl;
+    }
+};
+
+int main() {
+    BinaryTree tree;
+    
+    // Inserting elements
+    tree.insert(5);
+    tree.insert(3);
+    tree.insert(7);
+    tree.insert(1);
+    tree.insert(4);
+    
+    // Printing inorder traversal
+    tree.printInorderTraversal();
+    
+    // Searching elements
+    std::cout << "Searching 4: " << (tree.search(4) ? "Found" : "Not Found") << std::endl;
+    std::cout << "Searching 10: " << (tree.search(10) ? "Found" : "Not Found") << std::endl;
+    
+    return 0;
+}
